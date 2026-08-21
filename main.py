@@ -1,12 +1,28 @@
 import requests
 
 URL = "https://minecraft.wiki/api.php"
+
+
+"""
+Working on mutiple topic pareses
+
+Action should be query
+and
+page should be tittles with -> Diamond|Creeper|Steve
+
+"""
+
+
 PARAMS = {
     "action": "parse",
     "page": "Diamond Ore",
     "format": "json",
     "prop": "text"
 }
+
+
+
+
 
 # Ensure this is highly descriptive to pass automated wiki bot filtering
 headers = {
