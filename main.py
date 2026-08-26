@@ -1,4 +1,5 @@
 
+from pprint import pprint
 
 import requests
 from bs4 import BeautifulSoup
@@ -47,7 +48,7 @@ def web_scrape(topic):
             clean_text = p.get_text().strip()
             if clean_text != "" and not clean_text.endswith(":"):
                 end+=p.text
-        print(end)
+
 
 
 
@@ -66,5 +67,11 @@ def web_scrape(topic):
     return end
 
 
-for topic in topics:
-    web_scrape(topic)
+def make_dict(topic):
+    topic_dict = {}
+    for topic in topics:
+        topic_desc = web_scrape(topic)
+        topic_dict[topic] = topic_desc
+    pprint(topic_dict)
+
+make_dict(topics)
