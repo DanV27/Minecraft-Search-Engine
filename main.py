@@ -1,3 +1,4 @@
+import json
 from pprint import pprint
 import requests
 from bs4 import BeautifulSoup
@@ -87,13 +88,22 @@ def make_dict(topics):
         topic_dict[topic] = topic_desc
     return topic_dict
 
+def save_json(dictionary, filename):
+    with open(filename, "w") as f:
+        json.dump(dictionary, f, indent=4)
+
+
+
+
 def pipeline():
     topics = get_categories()
     topic_dict = make_dict(topics)
+    save_json(topic_dict, f"topic_dict.json")
 
-    pprint(topic_dict)
+
 
 pipeline()
+
 
 
 
