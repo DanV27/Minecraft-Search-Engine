@@ -74,4 +74,26 @@ def make_dict(topic):
         topic_dict[topic] = topic_desc
     pprint(topic_dict)
 
-make_dict(topics)
+def get_categories():
+    session = requests.Session()
+
+    # Base parameters for fetching all categories
+    params = {
+        "action": "query",
+        "format": "json",
+        "list": "allcategories",
+        "aclimit": "max"  # Fetches 500 categories per request
+    }
+    all_categories = []
+    response = session.get(url=URL, params=params)
+    data = response.json()
+
+    categories_batch = data.get("query", {}).get("allcategories", [])
+    for cat in categories_batch:
+        all_categories.append(cat["*"])
+    pprint(all_categories)
+
+
+get_categories()
+
+
