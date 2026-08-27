@@ -1,11 +1,31 @@
-
 from pprint import pprint
-
 import requests
 from bs4 import BeautifulSoup
 
 URL = "https://minecraft.wiki/api.php"
 
+def get_categories():
+    session = requests.Session()
+
+    # Base parameters for fetching all categories
+    params = {
+        "action": "query",
+        "format": "json",
+        "list": "categorymembers",
+        "cmtitle": "Category:Mobs",
+        "cmtype": "page",
+        "cmlimit": "max"  # Fetches 500 categories per request
+    }
+    all_categories = []
+    response = session.get(url=URL, params=params)
+    data = response.json()
+    #pprint(data)
+
+    categories_batch = data.get("query", {}).get("categorymembers", [])
+    for cat in categories_batch:
+        all_categories.append(cat["title"])
+    #pprint(all_categories)
+    return all_categories
 
 def web_scrape(topic):
 
@@ -38,21 +58,14 @@ def web_scrape(topic):
         page_html = data["parse"]["text"]["*"]
         soup = BeautifulSoup(page_html, "html.parser")
 
-        print("\nSuccess! Content fetched:")
-
+        print(f"\nSuccess! {topic} Content fetched:")
         text = soup.find_all('p')
         print("\nSuccess! Content cleaned:")
         for p in text:
             clean_text = p.get_text().strip()
             if clean_text != "" and not clean_text.endswith(":"):
                 end+=p.text
-        print(end)
-
-
-
-
-
-
+        #print(end)
 
     except requests.exceptions.JSONDecodeError:
         print("\n[!] CRASH PREVENTED: Server did not return a readable JSON string.")
@@ -66,40 +79,25 @@ def web_scrape(topic):
     return end
 
 
-def make_dict(topic):
+def make_dict(topics):
     topic_dict = {}
     for topic in topics:
+        print(f"--------------------------{topic}--------------------------")
         topic_desc = web_scrape(topic)
         topic_dict[topic] = topic_desc
+    return topic_dict
+
+def pipeline():
+    topics = get_categories()
+    topic_dict = make_dict(topics)
+
     pprint(topic_dict)
 
-def get_categories():
-    session = requests.Session()
+pipeline()
 
-    # Base parameters for fetching all categories
-    params = {
-        "action": "query",
-        "format": "json",
-        "list": "categorymembers",
-        "cmtitle": "Category:Mobs",
-        "cmtype": "page",
-        "cmlimit": "max"  # Fetches 500 categories per request
-    }
-    all_categories = []
-    response = session.get(url=URL, params=params)
-    data = response.json()
-    #pprint(data)
 
-    categories_batch = data.get("query", {}).get("categorymembers", [])
-    for cat in categories_batch:
-        all_categories.append(cat["title"])
-    #pprint(all_categories)
-    return all_categories
 
-topics = get_categories()
 
-for i in topics:
-    print(f"-------------------------{i}--------------------------------------")
-    web_scrape(i)
+
 
 
