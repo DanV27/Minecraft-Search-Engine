@@ -6,8 +6,6 @@ from bs4 import BeautifulSoup
 
 URL = "https://minecraft.wiki/api.php"
 
-#WORKING ON SCRAPING MULTIPLE TOPICS
-topics = ["Diamond Ore", "Creeper"]
 
 def web_scrape(topic):
 
@@ -48,6 +46,7 @@ def web_scrape(topic):
             clean_text = p.get_text().strip()
             if clean_text != "" and not clean_text.endswith(":"):
                 end+=p.text
+        print(end)
 
 
 
@@ -81,19 +80,26 @@ def get_categories():
     params = {
         "action": "query",
         "format": "json",
-        "list": "allcategories",
-        "aclimit": "max"  # Fetches 500 categories per request
+        "list": "categorymembers",
+        "cmtitle": "Category:Mobs",
+        "cmtype": "page",
+        "cmlimit": "max"  # Fetches 500 categories per request
     }
     all_categories = []
     response = session.get(url=URL, params=params)
     data = response.json()
+    #pprint(data)
 
-    categories_batch = data.get("query", {}).get("allcategories", [])
+    categories_batch = data.get("query", {}).get("categorymembers", [])
     for cat in categories_batch:
-        all_categories.append(cat["*"])
-    pprint(all_categories)
+        all_categories.append(cat["title"])
+    #pprint(all_categories)
+    return all_categories
 
+topics = get_categories()
 
-get_categories()
+for i in topics:
+    print(f"-------------------------{i}--------------------------------------")
+    web_scrape(i)
 
 
