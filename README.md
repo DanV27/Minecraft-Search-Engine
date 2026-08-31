@@ -1,9 +1,18 @@
 # Minecraft Search Engine
 
 ### What it can do so far: 
-It can parse one page out of the minecraft wiki, but using a list of multiple topics and a loop, it can all for multiple pages.
+main.py parses through these main categories:
+
+"Trading", "Brewing", "Enchanting",
+                       "Mobs", "Blocks", "Items",
+                       "Biomes", "Effects", "Crafting",
+                       "Smelting", "Smithing", "Structures",
+                       "Redstone", "History"  
+Then getting topics in each category and their description!  
+And saving it all into a orginized JSON file!
+
 
 
 
 ### What it I plan for it to do:
-Working on saving to json file so user can search for it later.
+Reverse indexing so It can be a real search engine
