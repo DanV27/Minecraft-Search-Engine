@@ -144,7 +144,7 @@ def pipeline():
 
     save_json(topic_dict, f"topic_dict.json")
 
-pipeline()
+
 
 
 
