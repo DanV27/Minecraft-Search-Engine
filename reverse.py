@@ -14,7 +14,7 @@ def is_english(text):
     except UnicodeEncodeError:
         return False
 
-#pp.pprint(data)
+
 
 def reverse_index(data):
     '''
