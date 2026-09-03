@@ -53,7 +53,11 @@ def reverse_index(data):
             else:
                 reversed_dict[word].append(topic)
 
+    #deleting any left over empty value lists.
+    for key in list(reversed_dict.keys()):
+        if not reversed_dict[key]:
+            del reversed_dict[key]
 
     return reversed_dict
-
+#pp.pprint(reverse_index(data))
 
