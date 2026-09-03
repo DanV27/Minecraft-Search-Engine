@@ -9,12 +9,27 @@ file_name = "topic_dict.json"
 with open(file_name) as json_file:
     data = json.load(json_file)
 
-dictionary = reverse_index(data)
 
+def basic_search(data):
+    """
 
-print("MINECRAFT SEARCH ENGINE")
-input_search = input("What would you like to search?: ")
+    :param data:
+    :return: Printed List of related topics
+    """
 
-if input_search in dictionary:
-    print(f"The topics you are looking for: {dictionary[input_search]}")
+    dictionary = reverse_index(data)
 
+    found = False
+    print("MINECRAFT SEARCH ENGINE")
+
+    input_search = input("What would you like to search?: ")
+    while found == False:
+        if input_search in dictionary:
+            pp.pprint(f"The topics you are looking for: {dictionary[input_search]}")
+            print("All done!")
+            found = True
+        else:
+            print("Nothing found")
+            input_search = input("What would you like to search?: ")
+
+basic_search(data)
