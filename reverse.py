@@ -61,3 +61,46 @@ def reverse_index(data):
     return reversed_dict
 #pp.pprint(reverse_index(data))
 
+
+def index_count(data):
+    reversed_dict = {}
+
+    new_dict = {}
+    for topic in data:
+        value = data[topic]
+        clean = value.lower()
+        clean = clean.translate(str.maketrans('', '', string.punctuation))
+        description_list = []
+        for word in clean.split():
+            if word.isalpha() and is_english(word):
+                description_list.append(word)
+        new_dict[topic] = list(description_list)
+
+
+
+
+    for topic in new_dict:
+
+        for word in new_dict[topic]:
+            if word not in reversed_dict:
+                reversed_dict[word] = {}
+            if topic not in reversed_dict[word]:
+                reversed_dict[word][topic] = 0
+            reversed_dict[word][topic] += 1
+
+
+
+    for key in list(reversed_dict.keys()):
+        if not reversed_dict[key]:
+            del reversed_dict[key]
+
+
+    return(reversed_dict)
+
+
+
+
+
+
+
+
