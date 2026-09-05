@@ -14,55 +14,18 @@ def is_english(text):
     except UnicodeEncodeError:
         return False
 
+def index_count(data):
 
-
-def reverse_index(data):
-    '''
-    FUNCTION reverse_index(data)
+    """
+    FUNCTION index_count(data)
     - This function takes in data from a json file
-    - iterates through every topic's description, make the
-      description in a set of words, lowercase, no punctuations,
-      has characters, is english and adds them to new_dict{}
-     -The function then iterates through every topic's strings in new_dict, checks if the word hasnt been added to the new reversed_dict{}
-     - Then adds the word and empty list,
-     -then  adds topic to its list
+    - iterates through every topic's description and returns a  nested dictionary with every word and its topics
+    and how many times that topic has that word in its description
+
 
     :param data:
     :return: reversed_dict
-    '''
-    new_dict = {}
-    for topic in data:
-        value = data[topic]
-        clean = value.lower()
-        clean = clean.translate(str.maketrans('', '', string.punctuation))
-        description_set = set()
-        for word in clean.split():
-            if word.isalpha() and is_english(word):
-                description_set.add(word)
-        new_dict[topic] = list(description_set)
-
-    reversed_dict = {}
-
-    for topic in new_dict:
-        value = new_dict[topic]
-        for word in value:
-
-            if word not in reversed_dict:
-
-                reversed_dict[word] = []
-            else:
-                reversed_dict[word].append(topic)
-
-    #deleting any left over empty value lists.
-    for key in list(reversed_dict.keys()):
-        if not reversed_dict[key]:
-            del reversed_dict[key]
-
-    return reversed_dict
-#pp.pprint(reverse_index(data))
-
-
-def index_count(data):
+    """
     reversed_dict = {}
 
     new_dict = {}
@@ -70,26 +33,30 @@ def index_count(data):
         value = data[topic]
         clean = value.lower()
         clean = clean.translate(str.maketrans('', '', string.punctuation))
+        #we cleaned the description
         description_list = []
         for word in clean.split():
             if word.isalpha() and is_english(word):
                 description_list.append(word)
+                #only added english words
         new_dict[topic] = list(description_list)
+        # now new_dict is topic: description
 
 
 
 
     for topic in new_dict:
-
         for word in new_dict[topic]:
+            # We iterate through every word in every topics description
             if word not in reversed_dict:
-                reversed_dict[word] = {}
-            if topic not in reversed_dict[word]:
-                reversed_dict[word][topic] = 0
-            reversed_dict[word][topic] += 1
+                # if word not in the new reversed_dict
+                reversed_dict[word] = {} # add an empty dictionary
+            if topic not in reversed_dict[word]: # if topic inst in that words dictionary
+                reversed_dict[word][topic] = 0 # add the topic and a 0 to it
+            reversed_dict[word][topic] += 1 # add 1 to the counter for how many times the topic has this word in it
 
 
-
+    #here we are just filtering out dicitonarys that are empty, so words that wont matter
     for key in list(reversed_dict.keys()):
         if not reversed_dict[key]:
             del reversed_dict[key]
