@@ -17,8 +17,37 @@ ALSO, need to organize the keys by alphabetic order in json file next time!
 """
 
 
+def get_sub_topics(category):
+    '''
 
 
+    :param category:
+    :return: A list of all categories available in the main category
+    '''
+    session = requests.Session()
+
+    # Base parameters for fetching all categories
+    params = {
+        "action": "query",
+        "format": "json",
+        "list": "categorymembers",
+        "cmtitle": f"Category:{category}",
+        "cmtype": "subcat",
+        "cmlimit": "max"  # Fetches 500 categories per request
+    }
+    all_categories = []
+    response = session.get(url=URL, params=params)
+    data = response.json()
+    pprint(data.keys())
+    print(f"--------------- MAIN CATEGORY: {category.upper()} ---------------")
+
+    categories_batch = data.get("query", {}).get("categorymembers", [])
+    for cat in categories_batch:
+        all_categories.append(cat["title"])
+    #pprint(all_categories)
+    return all_categories
+
+pprint(get_sub_topics("Blocks"))
 
 
 def get_topics(category):
@@ -50,6 +79,8 @@ def get_topics(category):
         all_categories.append(cat["title"])
     #pprint(all_categories)
     return all_categories
+
+pprint(get_topics("Blocks"))
 
 def web_scrape(topic):
     """
@@ -118,7 +149,7 @@ def save_json(dictionary, filename):
     :return: Saves to a json file neatly
     '''
     with open(filename, "w") as f:
-        json.dump(dictionary, f, indent=4,)
+        json.dump(dictionary, f, indent=4, sort_keys=True)
 
 
 
@@ -143,7 +174,6 @@ def pipeline():
         topic_dict.update(make_dict(topics))
 
     save_json(topic_dict, f"topic_dict.json")
-
 
 
 
