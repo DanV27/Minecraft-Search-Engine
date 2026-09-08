@@ -36,7 +36,8 @@ def basic_search(data):
                 list_of_topics.append(key)
 
 
-            print(f"The topics you are looking for in order by relevance: \n{list_of_topics}")
+            print(f"The topics you are looking for in order by relevance:")
+            pp.pprint(list_of_topics)
             print("All done!")
             found = True
         else:
