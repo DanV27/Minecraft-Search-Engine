@@ -2,6 +2,7 @@ import json
 from pprint import pprint
 import requests
 from bs4 import BeautifulSoup
+import pprint as pp
 
 URL = "https://minecraft.wiki/api.php"
 
@@ -39,11 +40,13 @@ def get_sub_topics(category):
     response = session.get(url=URL, params=params)
     data = response.json()
     pprint(data.keys())
-    print(f"--------------- MAIN CATEGORY: {category.upper()} ---------------")
+    print(f"--------------- SUB CATEGORY: {category.upper()} ---------------")
 
     categories_batch = data.get("query", {}).get("categorymembers", [])
     for cat in categories_batch:
-        all_categories.append(cat["title"])
+        title = cat["title"]
+        new_title = title.replace("Category:", "")
+        all_categories.append(new_title)
     #pprint(all_categories)
     return all_categories
 
@@ -170,12 +173,35 @@ def pipeline():
     for category in main_categories:
         topics = get_topics(category)
         topic_dict.update(make_dict(topics))
+        sub_topics = get_sub_topics(category)
+        topic_dict.update(make_dict(sub_topics))
 
     save_json(topic_dict, f"topic_dict.json")
 
 
+#pipeline()
+
+#get_sub_topics("Mobs")
 
 
+"""
+THINGS TO DO!!! for deeper_search branch
+1. get information from wiki from trading, brewing, enchanting, biomes
+    -so maybe get their sub categories from them or something, but we are missing their data
+2. go one level deeper on the other categories
+    - get new get_subtopic function iterates through main category and get gets theirs subs
+    - then scrape and save to overall data in json file
+
+
+3.
+Crafting
+Smelting
+Smithing
+
+Trading
+Brewing
+Enchanting
+"""
 
 
 
