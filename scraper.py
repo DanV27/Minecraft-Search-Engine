@@ -47,7 +47,7 @@ def get_sub_topics(category):
     #pprint(all_categories)
     return all_categories
 
-pprint(get_sub_topics("Blocks"))
+
 
 
 def get_topics(category):
@@ -79,8 +79,6 @@ def get_topics(category):
         all_categories.append(cat["title"])
     #pprint(all_categories)
     return all_categories
-
-pprint(get_topics("Blocks"))
 
 def web_scrape(topic):
     """
