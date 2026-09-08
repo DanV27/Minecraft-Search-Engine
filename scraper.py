@@ -171,6 +171,9 @@ def pipeline():
                        "Redstone", "History"]
     topic_dict = {}
     for category in main_categories:
+        category_desc = web_scrape(category)
+        if category_desc:
+            topic_dict[category] = category_desc
         topics = get_topics(category)
         topic_dict.update(make_dict(topics))
         sub_topics = get_sub_topics(category)
@@ -203,7 +206,7 @@ Brewing
 Enchanting
 """
 
-
+pipeline()
 
 
 
