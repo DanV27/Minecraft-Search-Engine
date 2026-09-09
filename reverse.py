@@ -2,6 +2,8 @@ import json
 import pprint as pp
 import string
 
+from scraper import save_json
+
 file_name = "topic_dict.json"
 with open(file_name) as json_file:
     data = json.load(json_file)
@@ -61,10 +63,12 @@ def index_count(data):
         if not reversed_dict[key]:
             del reversed_dict[key]
 
+    save_json(reversed_dict, f"index.json")
+
 
     return(reversed_dict)
 
-
+index_count(data)
 
 
 

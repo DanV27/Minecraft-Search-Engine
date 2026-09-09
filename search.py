@@ -45,7 +45,9 @@ def basic_search(data):
             input_search = input("What would you like to search?: ")
 
 basic_search(data)
+"""
+Index.json is the new json file with the updated reverse index and count for every topic
+But... the above search function does not work for it yet
+NEEDS FIX
+"""
 
-############################################################################################################
-#GO OVER CLEANING UP CODE AND ADDING COMMENTS BEFORE PUSHING THIS TO MAIN BRANCH!!!!!!!!!
-############################################################################################################
