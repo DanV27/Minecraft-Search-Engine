@@ -8,6 +8,10 @@ file_name = "index.json"
 with open(file_name) as json_file:
     data = json.load(json_file)
 
+file_name2 = "topic_dict.json"
+with open(file_name2) as json_file:
+    topic_dict = json.load(json_file)
+
 def basic_search(data):
 
     found = False
@@ -26,7 +30,11 @@ def basic_search(data):
             print(f"The topics you are looking for in order by relevance:")
             found = True
             pp.pprint(list_of_topics)
-            print("All done!")
+            print("Description most relevant topic: ")
+
+            desc = topic_dict[list_of_topics[0]]
+            print(desc)
+
         else:
             print("Nothing found")
             search = input("What would you like to search?: ")
@@ -35,10 +43,4 @@ def basic_search(data):
 
 basic_search(data)
 
-
-"""
-Index.json is the new json file with the updated reverse index and count for every topic
-But... the above search function does not work for it yet
-NEEDS FIX
-"""
 

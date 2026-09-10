@@ -187,24 +187,7 @@ def pipeline():
 #get_sub_topics("Mobs")
 
 
-"""
-THINGS TO DO!!! for deeper_search branch
-1. get information from wiki from trading, brewing, enchanting, biomes
-    -so maybe get their sub categories from them or something, but we are missing their data
-2. go one level deeper on the other categories
-    - get new get_subtopic function iterates through main category and get gets theirs subs
-    - then scrape and save to overall data in json file
 
-
-3.
-Crafting
-Smelting
-Smithing
-
-Trading
-Brewing
-Enchanting
-"""
 
 
 
