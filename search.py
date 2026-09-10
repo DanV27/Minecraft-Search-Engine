@@ -1,15 +1,12 @@
-"""
-Where we will make search function to look through the reversed index dictionary we made!
-"""
 import json
 import pprint as pp
 
-file_name = "index.json"
-with open(file_name) as json_file:
+index_file = "index.json"
+with open(index_file) as json_file:
     data = json.load(json_file)
 
-file_name2 = "topic_dict.json"
-with open(file_name2) as json_file:
+desc_file = "topic_dict.json"
+with open(desc_file) as json_file:
     topic_dict = json.load(json_file)
 
 def basic_search(data):
@@ -30,7 +27,7 @@ def basic_search(data):
             print(f"The topics you are looking for in order by relevance:")
             found = True
             pp.pprint(list_of_topics)
-            print("Description most relevant topic: ")
+            print(f"Description of {list_of_topics[0]}")
 
             desc = topic_dict[list_of_topics[0]]
             print(desc)
@@ -40,7 +37,13 @@ def basic_search(data):
             search = input("What would you like to search?: ")
 
 
+"""
+Cleaned up and added comments to code!
 
+Sometimes when searching a thing like block,
+i get returned some other topic as the most relevant, even is block it's self is a topic...
+further investigation is needed...
+"""
 basic_search(data)
 
 

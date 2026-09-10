@@ -2,59 +2,17 @@ import json
 from pprint import pprint
 import requests
 from bs4 import BeautifulSoup
-import pprint as pp
+"""
+Main reason for this file is scrape the minecraft Wiki.
+"""
 
 URL = "https://minecraft.wiki/api.php"
 
-"""
-Overall fetches MOST data but not all, 
-Here are the main Category's that did not get anything:
-- Trading
-- Brewing
-- Enchanting
-- Biomes
-
-ALSO, need to organize the keys by alphabetic order in json file next time!
-"""
-
-
-def get_sub_topics(category):
-    '''
-
-
-    :param category:
-    :return: A list of all categories available in the main category
-    '''
-    session = requests.Session()
-
-    # Base parameters for fetching all categories
-    params = {
-        "action": "query",
-        "format": "json",
-        "list": "categorymembers",
-        "cmtitle": f"Category:{category}",
-        "cmtype": "subcat",
-        "cmlimit": "max"  # Fetches 500 categories per request
-    }
-    all_categories = []
-    response = session.get(url=URL, params=params)
-    data = response.json()
-    pprint(data.keys())
-    print(f"--------------- SUB CATEGORY: {category.upper()} ---------------")
-
-    categories_batch = data.get("query", {}).get("categorymembers", [])
-    for cat in categories_batch:
-        title = cat["title"]
-        new_title = title.replace("Category:", "")
-        all_categories.append(new_title)
-    #pprint(all_categories)
-    return all_categories
-
-
-
-
 def get_topics(category):
     '''
+    This function is given a category like "Mobs",
+    then it grabs topics from that category and
+    returns a list returns a list of all topics available in the main category.
 
 
     :param category:
@@ -83,8 +41,48 @@ def get_topics(category):
     #pprint(all_categories)
     return all_categories
 
+
+def get_sub_topics(category):
+    '''
+    This function is given a topic like "Undead" from main category "Mobs",
+    it searches into undead to get any hidden subtopics in there.
+    returns a list of all subtopics available in the topic.
+
+
+    :param category:
+    :return: A list of all categories available in the main category
+    '''
+    session = requests.Session()
+
+    # Base parameters for fetching all categories
+    params = {
+        "action": "query",
+        "format": "json",
+        "list": "categorymembers",
+        "cmtitle": f"Category:{category}",
+        "cmtype": "subcat",
+        "cmlimit": "max"  # Fetches 500 categories per request
+    }
+    all_categories = []
+    response = session.get(url=URL, params=params)
+    data = response.json()
+    pprint(data.keys())
+    print(f"--------------- SUB CATEGORY: {category.upper()} ---------------")
+
+    categories_batch = data.get("query", {}).get("categorymembers", [])
+    for cat in categories_batch:
+        title = cat["title"]
+        new_title = title.replace("Category:", "")
+        all_categories.append(new_title)
+
+    return all_categories
+
 def web_scrape(topic):
     """
+    This function is given a topic or subtopic,
+    the function then grabs that topics description from
+    the minecraft wiki, cleans the noise and returns a clean
+    text(str) of the description.
 
     :param topic:
     :return: end (clean text description of topic)
@@ -96,6 +94,7 @@ def web_scrape(topic):
         "format": "json",
         "prop": "text"
     }
+
     # Ensure this is highly descriptive to pass automated wiki bot filtering
     headers = {
         "User-Agent": "MinecraftSearchEngineProject/1.0 (contact: dannywarr911@gmail.com)"
@@ -128,9 +127,13 @@ def web_scrape(topic):
 
     return end
 
-
 def make_dict(topics):
     """
+    This function is given a topic or subtopic,
+    then uses the web_scrape() function to grabs topic description.
+    And finally turns it into a dictionary where,
+    Key=Topic and Value=Description.
+
 
     :param topics:
     :return: topic_dict (This is a dictionary form of output. Key=Topic, Value=Description)
@@ -144,6 +147,7 @@ def make_dict(topics):
 
 def save_json(dictionary, filename):
     '''
+    Function takes dictionary and saves it to a json file.
 
     :param dictionary:
     :param filename:
@@ -151,8 +155,6 @@ def save_json(dictionary, filename):
     '''
     with open(filename, "w") as f:
         json.dump(dictionary, f, indent=4, sort_keys=True)
-
-
 
 
 def pipeline():
@@ -182,9 +184,6 @@ def pipeline():
     save_json(topic_dict, f"topic_dict.json")
 
 
-#pipeline()
-
-#get_sub_topics("Mobs")
 
 
 
