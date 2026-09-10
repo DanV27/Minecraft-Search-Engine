@@ -1,6 +1,7 @@
 import json
-import pprint as pp
 import string
+
+from scraper import save_json
 
 file_name = "topic_dict.json"
 with open(file_name) as json_file:
@@ -14,14 +15,14 @@ def is_english(text):
     except UnicodeEncodeError:
         return False
 
-def index_count(data):
-
+def indexed_dictionary(data):
     """
     FUNCTION index_count(data)
     - This function takes in data from a json file
     - iterates through every topic's description and returns a  nested dictionary with every word and its topics
-    and how many times that topic has that word in its description
+    and how many times that topic has that word in its description.
 
+    we only use this function once to update index.json with new data!
 
     :param data:
     :return: reversed_dict
@@ -42,9 +43,6 @@ def index_count(data):
         new_dict[topic] = list(description_list)
         # now new_dict is topic: description
 
-
-
-
     for topic in new_dict:
         for word in new_dict[topic]:
             # We iterate through every word in every topics description
@@ -61,9 +59,10 @@ def index_count(data):
         if not reversed_dict[key]:
             del reversed_dict[key]
 
+    save_json(reversed_dict, f"index.json")
+
 
     return(reversed_dict)
-
 
 
 
