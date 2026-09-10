@@ -37,13 +37,7 @@ def basic_search(data):
             search = input("What would you like to search?: ")
 
 
-"""
-Cleaned up and added comments to code!
 
-Sometimes when searching a thing like block,
-i get returned some other topic as the most relevant, even is block it's self is a topic...
-further investigation is needed...
-"""
 basic_search(data)
 
 
