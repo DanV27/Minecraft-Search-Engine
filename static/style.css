@@ -1,0 +1,12 @@
+  output {
+    display: inline-block;
+    min-width: 60px;
+    padding: 6px 12px;
+    margin-left: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    text-align: center;
+  }

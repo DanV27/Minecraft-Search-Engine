@@ -37,7 +37,27 @@ def basic_search(data):
             search = input("What would you like to search?: ")
 
 
+def search_topic(search):
+    index_file = "index.json"
+    with open(index_file) as json_file:
+        data = json.load(json_file)
 
-basic_search(data)
+    desc_file = "topic_dict.json"
+    with open(desc_file) as json_file:
+        topic_dict = json.load(json_file)
 
+    if search in data:
+
+        sorted_data = dict(sorted(data[search].items(), key=lambda item: item[1], reverse=True))
+        list_of_topics = []
+        for key in sorted_data:
+            #here we just make the dictionary into a list of only the topics
+            list_of_topics.append(key)
+
+        desc = topic_dict[list_of_topics[0]]
+
+        return list_of_topics
+
+    else:
+        return None
 
