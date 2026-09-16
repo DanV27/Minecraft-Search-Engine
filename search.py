@@ -1,35 +1,64 @@
-"""
-Where we will make search function to look through the reversed index dictionary we made!
-"""
 import json
-from reverse import reverse_index
 import pprint as pp
 
-file_name = "topic_dict.json"
-with open(file_name) as json_file:
+
+index_file = "data/index.json"
+with open(index_file) as json_file:
     data = json.load(json_file)
 
+desc_file = "data/topic_dict.json"
+with open(desc_file) as json_file:
+    topic_dict = json.load(json_file)
 
 def basic_search(data):
-    """
-
-    :param data:
-    :return: Printed List of related topics
-    """
-
-    dictionary = reverse_index(data)
 
     found = False
-    print("MINECRAFT SEARCH ENGINE")
 
-    input_search = input("What would you like to search?: ")
+    search = input("What would you like to search?: ")
+
     while found == False:
-        if input_search in dictionary:
-            pp.pprint(f"The topics you are looking for: {dictionary[input_search]}")
-            print("All done!")
+        if search in data:
+
+            sorted_data = dict(sorted(data[search].items(), key=lambda item: item[1], reverse=True))
+            list_of_topics = []
+            for key in sorted_data:
+                #here we just make the dictionary into a list of only the topics
+                list_of_topics.append(key)
+
+            print(f"The topics you are looking for in order by relevance:")
             found = True
+            pp.pprint(list_of_topics)
+            print(f"Description of {list_of_topics[0]}")
+
+            desc = topic_dict[list_of_topics[0]]
+            print(desc)
+
         else:
             print("Nothing found")
-            input_search = input("What would you like to search?: ")
+            search = input("What would you like to search?: ")
 
-basic_search(data)
+
+def search_topic(search):
+    index_file = "data/index.json"
+    with open(index_file) as json_file:
+        data = json.load(json_file)
+
+    desc_file = "data/topic_dict.json"
+    with open(desc_file) as json_file:
+        topic_dict = json.load(json_file)
+
+    if search in data:
+
+        sorted_data = dict(sorted(data[search].items(), key=lambda item: item[1], reverse=True))
+        list_of_topics = []
+        for key in sorted_data:
+            #here we just make the dictionary into a list of only the topics
+            list_of_topics.append(key)
+
+        desc = topic_dict[list_of_topics[0]]
+
+        return list_of_topics
+
+    else:
+        return None
+

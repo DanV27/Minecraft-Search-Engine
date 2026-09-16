@@ -1,8 +1,9 @@
 import json
-import pprint as pp
 import string
 
-file_name = "topic_dict.json"
+from scraper import save_json
+
+file_name = "data/topic_dict.json"
 with open(file_name) as json_file:
     data = json.load(json_file)
 
@@ -14,50 +15,58 @@ def is_english(text):
     except UnicodeEncodeError:
         return False
 
-
-
-def reverse_index(data):
-    '''
-    FUNCTION reverse_index(data)
+def indexed_dictionary(data):
+    """
+    FUNCTION index_count(data)
     - This function takes in data from a json file
-    - iterates through every topic's description, make the
-      description in a set of words, lowercase, no punctuations,
-      has characters, is english and adds them to new_dict{}
-     -The function then iterates through every topic's strings in new_dict, checks if the word hasnt been added to the new reversed_dict{}
-     - Then adds the word and empty list,
-     -then  adds topic to its list
+    - iterates through every topic's description and returns a  nested dictionary with every word and its topics
+    and how many times that topic has that word in its description.
+
+    we only use this function once to update index.json with new data!
 
     :param data:
     :return: reversed_dict
-    '''
+    """
+    reversed_dict = {}
+
     new_dict = {}
     for topic in data:
         value = data[topic]
         clean = value.lower()
         clean = clean.translate(str.maketrans('', '', string.punctuation))
-        description_set = set()
+        #we cleaned the description
+        description_list = []
         for word in clean.split():
             if word.isalpha() and is_english(word):
-                description_set.add(word)
-        new_dict[topic] = list(description_set)
-
-    reversed_dict = {}
+                description_list.append(word)
+                #only added english words
+        new_dict[topic] = list(description_list)
+        # now new_dict is topic: description
 
     for topic in new_dict:
-        value = new_dict[topic]
-        for word in value:
-
+        for word in new_dict[topic]:
+            # We iterate through every word in every topics description
             if word not in reversed_dict:
+                # if word not in the new reversed_dict
+                reversed_dict[word] = {} # add an empty dictionary
+            if topic not in reversed_dict[word]: # if topic inst in that words dictionary
+                reversed_dict[word][topic] = 0 # add the topic and a 0 to it
+            reversed_dict[word][topic] += 1 # add 1 to the counter for how many times the topic has this word in it
 
-                reversed_dict[word] = []
-            else:
-                reversed_dict[word].append(topic)
 
-    #deleting any left over empty value lists.
+    #here we are just filtering out dicitonarys that are empty, so words that wont matter
     for key in list(reversed_dict.keys()):
         if not reversed_dict[key]:
             del reversed_dict[key]
 
-    return reversed_dict
-#pp.pprint(reverse_index(data))
+    save_json(reversed_dict, f"data/index.json")
+
+
+    return(reversed_dict)
+
+
+
+
+
+
 
