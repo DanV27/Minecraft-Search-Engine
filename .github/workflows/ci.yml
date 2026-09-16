@@ -1,0 +1,45 @@
+name: Comprehensive Code Check
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  code-check:
+    name: Lint, Format, and Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out the code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # Super-Linter requires full history to check changed files efficiently
+          fetch-depth: 0
+
+      # 2. Security Scan (Finds leaked API keys, hardcoded secrets, and vulns)
+      - name: Run Trivy Security Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          format: 'table'
+          exit-code: '1' # Fails the build if high/critical issues are found
+          severity: 'HIGH,CRITICAL'
+
+      # 3. Code Formatting, Style, & Language Bugs
+      - name: Run Super-Linter
+        uses: super-linter/super-linter@v7
+        env:
+          VALIDATE_ALL_CODEBASE: false # Only scans files changed in the current commit/PR (much faster)
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Allows the bot to post status badges on your commits
+
+          # Enable specific languages in your stack
+          VALIDATE_PYTHON_RUFF: true
+          VALIDATE_HTML: true
+          VALIDATE_CSS: true
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_JSX: true
+          VALIDATE_TYPESCRIPT_ES: true
