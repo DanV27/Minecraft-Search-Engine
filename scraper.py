@@ -181,7 +181,7 @@ def pipeline():
         sub_topics = get_sub_topics(category)
         topic_dict.update(make_dict(sub_topics))
 
-    save_json(topic_dict, f"topic_dict.json")
+    save_json(topic_dict, f"data/topic_dict.json")
 
 
 

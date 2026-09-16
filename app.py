@@ -1,13 +1,9 @@
 from flask import Flask, request, jsonify
-from flask import render_template
 from flask_cors import CORS
 from search import search_topic
 
 app = Flask(__name__)
 CORS(app)
-@app.route("/")
-def index():
-    return render_template("index.html")
 
 @app.route('/', methods=["POST"])
 def post():
