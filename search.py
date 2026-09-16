@@ -1,11 +1,12 @@
 import json
 import pprint as pp
 
-index_file = "index.json"
+
+index_file = "data/index.json"
 with open(index_file) as json_file:
     data = json.load(json_file)
 
-desc_file = "topic_dict.json"
+desc_file = "data/topic_dict.json"
 with open(desc_file) as json_file:
     topic_dict = json.load(json_file)
 
@@ -38,11 +39,11 @@ def basic_search(data):
 
 
 def search_topic(search):
-    index_file = "index.json"
+    index_file = "data/index.json"
     with open(index_file) as json_file:
         data = json.load(json_file)
 
-    desc_file = "topic_dict.json"
+    desc_file = "data/topic_dict.json"
     with open(desc_file) as json_file:
         topic_dict = json.load(json_file)
 

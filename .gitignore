@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node / React
+node_modules/
+minesearchReact/dist/
+minesearchReact/.vite/
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
